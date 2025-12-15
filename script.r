@@ -90,6 +90,33 @@ ggplot() +
 
 # ============================================================================
 
+# Visualizing Figure 5
+
+fault_dist <- fault$geom %>% as.psp() %>% distfun() %>%
+  as.im() %>% as.data.frame() %>%  rast(crs = "EPSG:23845")
+ggplot() +
+  geom_spatraster(data = fault_dist) +
+  scale_fill_viridis_c(option = "plasma") +
+  labs(title = "Distance to nearest active fault in Indonesia",
+       x = "Longitude", y = "Latitude", fill = "Distance (m)") +
+  theme_bw()
+
+# Visualizing Figure 6
+
+fault_dist %>%
+  hist(breaks = 100,
+       main = "Histogram of distance to nearest fault in Indonesia",
+       xlab = "Distance (m)")
+
+# Visualizing Figure 7
+
+subduction %>% 
+  hist(breaks = 100,
+       main = "Histogram of depth of subduction zone in Indonesia",
+       xlab = "Distance (m)")
+
+# ============================================================================
+
 # Making `ppp` object from the earthquake `sf` object
 quake_coords <- st_coordinates(quake_sf)
 quake_window <- owin(
@@ -106,7 +133,7 @@ if(any(duplicated(quake_ppp))) {
   quake_ppp <- rjitter(quake_ppp, retry = T, nsim = 1, drop = T)
 }
 
-# Counting quadrats and visualizing Figure 5
+# Counting quadrats and visualizing Figure 8
 quake_count <- quadratcount(quake_ppp, nx = 20, ny = 10)
 quake_count %>% as.data.frame() %>% tibble() %>% 
   separate(col = "x", sep = ",", into = c("x_lower", "x_upper")) %>% 
@@ -139,7 +166,7 @@ sigma_cv <- bw.diggle(quake_ppp)
 lambda_cv <- density(quake_ppp, sigma = sigma_cv, positive = T,
                      kernel = "gaussian", diggle = T)
 
-# Visualizing Figure 6
+# Visualizing Figure 9
 ggplot() +
   geom_spatraster(data = rast(as.data.frame(lambda_cv),
                               crs = "EPSG:23845")) +
@@ -150,7 +177,7 @@ ggplot() +
 
 # ============================================================================
 
-# Getting Ripley's K and L-functions and visualizing Figure 7
+# Getting Ripley's K and L-functions and visualizing Figure 10
 par(mfrow = c(1,2))
 Kest(quake_ppp) %>% plot(main = "Estimated K-function", xlab = "Distance (m)")
 Lest(quake_ppp) %>% plot(main = "Estimated L-function", xlab = "Distance (m)")
@@ -163,7 +190,7 @@ env_K <- envelope(quake_ppp, Kinhom, lambda = lambda_cv,
                   nsim = 30, global = TRUE)
 
 
-# Visualizing Figure 8
+# Visualizing Figure 11
 plot(env_K, sqrt(./pi) ~ r, main="Inhomogeneous L-Function with Envelopes",
      xlab = "Distance (m)")
 
@@ -194,7 +221,7 @@ lgcp_coef %>%
          digits = c(-4, -4, -4, -4, -4, 4, 4)) %>% 
   print(comment = F)
 
-# Visualizing Figure 9
+# Visualizing Figure 12
 lambda_lgcp <- predict(fit_lgcp)
 ggplot() +
   geom_sf(data = ne_countries(), fill = "grey") +
@@ -206,7 +233,7 @@ ggplot() +
        x = "Longitude", y = "Latitude", fill = "Intensity") +
   coord_sf(xlim = c(92, 145), ylim = c(-14, 10))
 
-# Visualizing Figure 10
+# Visualizing Figure 13
 par(mfrow = c(1, 2))
 plot(fit_lgcp, what="statistic", pause=FALSE,
      main = "Fitted Inhomogeneous\nK-Function using LGCP",
@@ -215,7 +242,7 @@ plot(fit_lgcp, sqrt(./pi) ~ r, what="statistic", pause=FALSE,
      main = "Fitted Inhomogeneous\nL-Function using LGCP",
      xlab = "Distance (m)")
 
-# Visualizing Figure 11
+# Visualizing Figure 14
 plot(fit_lgcp,
      sqrt(./pi) - r ~ r,
      what="statistic", pause=FALSE,

@@ -4,7 +4,14 @@ By Sumin Yun [(LinkedIn)](https://www.linkedin.com/in/bcchickadee/)
 
 ## Introduction
 
-This GitHub repository contains the source code for "Point Pattern Analysis of Earthquakes in Indonesia". This project was intially created as the final report of the course "Statistical Analysis for Spatial Data", a graduate-level course in the Department of Statistics in Seoul National University.
+This GitHub repository contains the source code for "Point Pattern Analysis of Earthquakes in Indonesia using Log-Gaussian Cox Processes". This project was intially created as the final report of the course "Statistical Analysis for Spatial Data", a graduate-level course in the Department of Statistics in Seoul National University.
+
+## Main Findings
+
+The main findings of the research can be summarized as follows:
+
+1. Earthquakes show strong clustering around geological features such as faults or subduction zones.
+2. The inhomogeneous $L$-function suggests a clustering structure which peaks at $\approx$ 90km from the epicenter of an earthquake, signifying a spatial triggering range of an initial seismic event.
 
 ## Data Usage
 
